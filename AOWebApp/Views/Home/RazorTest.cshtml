@@ -1,0 +1,58 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    string sentence = "This is a test sentence.";
+    bool isTrue = true;
+    int number = 42;
+    int number2 = 24;
+    int sum = number + number2;
+    double pi = 3.14159;
+    float e = 2.71828f;
+    long largeNumber = 1234567890123456789L;
+    decimal preciseValue = 12345.6789M;
+    DateTime currentDate = DateTime.Now;
+    ViewData["Title"] = "Home Razor Test";
+}
+
+<h1>Home Controller Razor Test View</h1>
+<p>Sentence: @sentence</p>
+<p>Boolean: @isTrue</p>
+<p>Integer: @number</p>
+<p>Double: @pi</p>
+<p>Float: @e</p>
+<p>Long: @largeNumber</p>
+<p>Decimal: @preciseValue</p>
+<p>DateTime: @currentDate.ToString("yyyy-MM-dd HH:mm:ss")</p>
+
+<p>Sum of @number and @number2 is: @sum</p>
+
+@if (isTrue)
+{
+    <p>The boolean value is true.</p>
+}
+else
+{
+    <p>The boolean value is false.</p>
+}
+
+@{
+    int[] numbers = { 1, 2, 3, 4, 5 };
+}
+
+<p>For each loop:</p>
+<ul>
+    @foreach (var num in numbers)
+    {
+        <li>Number: @num</li>
+    }
+</ul>
+
+<p>For loop</p>
+<ul>
+    @for (int i = 0; i < numbers.Length; i++)
+    {
+        <li>Number: @numbers[i]</li>
+    }
+</ul>
+
