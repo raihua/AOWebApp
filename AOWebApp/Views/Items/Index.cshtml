@@ -10,6 +10,17 @@
     <a class="btn btn-outline-info" asp-action="Create">Create New</a>
 </p>
 
+<form method="post" asp-action="Index" asp-controller="Items">
+    <div class="input-group">
+        <span class="input-group-text">Item Search</span>
+        <input type="text" class="form-control" title="Search by item name, Max 100 chars." placeholder="Type here..." maxlength="100">
+    </div>
+    <div class="mt-4 mb-4">
+        <button type="submit" class="btn btn-outline-primary">Submit</button>
+        <a asp-action="Index" asp-controller="Items" class="btn btn-outline-danger">Reset</a>
+    </div>
+</form>
+
 <div class="row gy-3 gx-3">
     @foreach (var item in Model)
     {
