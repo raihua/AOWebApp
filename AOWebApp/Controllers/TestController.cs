@@ -8,5 +8,21 @@ namespace AOWebApp.Controllers
         {
             return View();
         }
+
+        [HttpGet]
+        [HttpPost]
+        public IActionResult RazorTest(int? id)
+        {
+            ViewBag.routeId = RouteData.Values["id"]?.ToString();
+
+            if (Request.HasFormContentType)
+            {
+                ViewBag.formId = Request.Form["id"];
+            }
+
+            ViewBag.queryId = Request.Query["id"].FirstOrDefault();
+
+            return View();
+        }
     }
 }

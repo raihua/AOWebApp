@@ -1,0 +1,58 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewData["Title"] = "Test Controller RazorTest";
+    Layout = "_Layout";
+}
+
+<h1>Test Controller RazorTest</h1>
+<h1>Pratical 1</h1>
+
+@{
+    int num1 = 10;
+    int num2 = 20;
+    int sum = num1 + num2;
+}
+
+<p>The sum of @num1 and @num2 is: @sum</p>
+
+@{
+    string[] words = { "apple", "banana", "cherry" };
+}
+
+<ul>
+    @foreach (var word in words)
+    {
+        <li>@word</li>
+    }
+</ul>
+
+@{
+    var coordanates =  new[]
+    {
+        new {x=1, y=12},
+        new {x=12, y=11},
+        new {x=13, y=15},
+    };
+}
+
+<p>Coordinates</p>
+<ul>
+    @for (int i = 0; i < coordanates.Length; i++)
+    {
+        <li>Coordinate @i: X = @coordanates[i].x, Y = @coordanates[i].y</li>
+    }
+</ul>
+
+@Html.ActionLink("Id, query, value submitted", "RazorTest", new { id = 5, query = "hello", value = 2 }) 
+
+<form method="post" action="/Test/RazorTest/444?id=33">
+    <input name="id" value="666"/>
+    <button type="submit">Submit all</button>
+</form>
+
+<p>Form id string: @ViewBag.formId</p>
+<p>Form query string: @ViewBag.queryId</p>
+<p>Form route id string: @ViewBag.routeId</p>
+
