@@ -23,11 +23,10 @@ namespace AOWebApp.Controllers
             return View();
         }
 
-        public IActionResult Test()
+        public IActionResult Test(int? id, string text)
         {
-            var id = Request.RouteValues["id"];
-            ViewData.Add("Id", id);
             ViewBag.Id = id;
+            ViewBag.searchText = text;
 
             return View();
         }
