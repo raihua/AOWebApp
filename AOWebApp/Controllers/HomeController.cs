@@ -23,6 +23,15 @@ namespace AOWebApp.Controllers
             return View();
         }
 
+        public IActionResult Test()
+        {
+            var id = Request.RouteValues["id"];
+            ViewData.Add("Id", id);
+            ViewBag.Id = id;
+
+            return View();
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
