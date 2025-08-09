@@ -10,7 +10,7 @@ builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
 builder.Services.AddDbContext<AOWebAppContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("AOWebAppContext") ?? throw new InvalidOperationException("Connection string 'AOWebAppContext' not found.")));
 
-builder.Services.AddDbContext<AOWebAppContext>(options =>
+builder.Services.AddDbContext<AmazonOrdersContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("AmazonOrdersContext") ?? throw new InvalidOperationException("Connection string 'AmazonOrdersContext' not found.")));
 
 var app = builder.Build();
