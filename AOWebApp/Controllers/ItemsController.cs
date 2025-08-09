@@ -20,10 +20,24 @@ namespace AOWebApp.Controllers
         }
 
         // GET: Items
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchText)
         {
-            var amazonOrdersContext = _context.Items.Include(i => i.Category);
-            return View(await amazonOrdersContext.ToListAsync());
+            ViewBag.searchText = searchText;
+
+            var amazonOrdersContext = _context.Items
+                .Include(i => i.Category)
+                .OrderBy(i => i.ItemName)
+                .AsQueryable();
+
+            if (!string.IsNullOrEmpty(searchText))
+            {
+                amazonOrdersContext = amazonOrdersContext.Where(i => i.ItemName.Contains(searchText));
+            }
+
+            var items = await amazonOrdersContext.ToListAsync();
+            ViewBag.itemsCount = items.Count();
+
+            return View(items);
         }
 
         // GET: Items/Details/5
