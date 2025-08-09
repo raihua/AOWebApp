@@ -5,7 +5,10 @@
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-    <a href="./TestPage.html">Link to Static Test Page</a>
-    <a href="/Test/RazorTest">Link to Test RazorTest Page</a>
-    @Html.ActionLink("Helper Link to Test RazorTest", "RazorTest", "Test")
+    <ul class ="list-group">
+        <li class="list-group-item"><a href="./TestPage.html">Link to Static Test Page</a></li>
+        <li class="list-group-item"><a href="/Test/RazorTest">Link to Test RazorTest Page</a></li>
+        <li class="list-group-item">@Html.ActionLink("Helper Link to Test RazorTest", "RazorTest", "Test")</li>
+        <li class="list-group-item">@Html.ActionLink("Helper Link to ExampleItems Index", "Index", "ExampleItems")</li>
+    </ul>
 </div>
