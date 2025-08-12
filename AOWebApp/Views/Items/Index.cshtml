@@ -11,9 +11,16 @@
 </p>
 
 <form method="post" asp-action="Index" asp-controller="Items">
-    <div class="input-group">
-        <span class="input-group-text">Item Search</span>
-        <input name="searchText" type="text" class="form-control" title="Search by item name, Max 100 chars." placeholder="Type here..." maxlength="100" value="@ViewBag.searchText">
+    <div class="flex-row d-flex">
+        <div class="input-group">
+            <span class="input-group-text">Item Search</span>
+            <input name="searchText" type="text" class="form-control" title="Search by item name, Max 100 chars." placeholder="Type here..." maxlength="100" value="@ViewBag.searchText">
+        </div>
+
+        <select name="categoryId" title="View items for a specific category" class="form-control" asp-items="@ViewBag.CategoryList">
+            <option value="">All Categories</option>
+        </select>
+
     </div>
     <div class="mt-4 mb-4">
         <button type="submit" class="btn btn-outline-primary">Submit</button>
@@ -23,7 +30,9 @@
 
 @if (@ViewBag.itemsCount > 0)
 {
-    <h3 class="text-success">Results: @ViewBag.itemsCount</h3>
+    string ItemsCountMessage = ViewBag.itemsCount == 1 ? "1 item found" : "2+ items found";
+    
+    <h3 class="text-success">Results: @ItemsCountMessage</h3>
     <div class="row gy-3 gx-3">
         @foreach (var item in Model)
         {
