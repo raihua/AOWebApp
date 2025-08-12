@@ -35,7 +35,8 @@ namespace AOWebApp.Controllers
             var Categories = CategoriesQuery.ToListAsync();
             ViewBag.CategoryList = new SelectList(await Categories,
                                     nameof(ItemCategory.CategoryId),
-                                    nameof(ItemCategory.CategoryName));
+                                    nameof(ItemCategory.CategoryName),
+                                    categoryId);
             #endregion
 
             #region ItemQuery
