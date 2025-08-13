@@ -28,7 +28,7 @@
     </div>
 </form>
 
-@if (Model.Items.Count > 0)
+@if (Model.Items?.Count > 0)
 {
     string ItemsCountMessage = Model.Items.Count == 1 ? "1 item found" : "2+ items found";
     
