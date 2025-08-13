@@ -1,4 +1,4 @@
-﻿@model IEnumerable<AOWebApp.Models.Item>
+﻿@model AOWebApp.ViewModels.ItemSearch;
 
 @{
     ViewData["Title"] = "Index";
@@ -14,10 +14,10 @@
     <div class="flex-row d-flex">
         <div class="input-group">
             <span class="input-group-text">Item Search</span>
-            <input name="searchText" type="text" class="form-control" title="Search by item name, Max 100 chars." placeholder="Type here..." maxlength="100" value="@ViewBag.searchText">
+            <input asp-for="SearchText" type="text" class="form-control" title="Search by item name, Max 100 chars." placeholder="Type here..." maxlength="100" value="@Model.SearchText">
         </div>
 
-        <select name="categoryId" title="View items for a specific category" class="form-control" asp-items="@ViewBag.CategoryList">
+        <select asp-for="CategoryId" title="View items for a specific category" class="form-control" asp-items="@Model.CategoryList">
             <option value="">All Categories</option>
         </select>
 
@@ -28,13 +28,13 @@
     </div>
 </form>
 
-@if (@ViewBag.itemsCount > 0)
+@if (Model.Items.Count > 0)
 {
-    string ItemsCountMessage = ViewBag.itemsCount == 1 ? "1 item found" : "2+ items found";
+    string ItemsCountMessage = Model.Items.Count == 1 ? "1 item found" : "2+ items found";
     
     <h3 class="text-success">Results: @ItemsCountMessage</h3>
     <div class="row gy-3 gx-3">
-        @foreach (var item in Model)
+        @foreach (var item in Model.Items)
         {
             <div class="col-4">
                 <div class="card">

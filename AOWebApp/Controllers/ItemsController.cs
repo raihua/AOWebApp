@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using AOWebApp.Data;
 using AOWebApp.Models;
+using AOWebApp.ViewModels;
 
 namespace AOWebApp.Controllers
 {
@@ -22,6 +23,8 @@ namespace AOWebApp.Controllers
         // GET: Items
         public async Task<IActionResult> Index(string searchText, int? categoryId)
         {
+            ItemSearch itemSearch = new ItemSearch();
+
             #region CategoriesQuery
             var CategoriesQuery =
                 from c in _context.ItemCategories
@@ -33,14 +36,15 @@ namespace AOWebApp.Controllers
                     c.CategoryName
                 };
             var Categories = CategoriesQuery.ToListAsync();
-            ViewBag.CategoryList = new SelectList(await Categories,
+
+            itemSearch.CategoryList = new SelectList(await Categories,
                                     nameof(ItemCategory.CategoryId),
                                     nameof(ItemCategory.CategoryName),
                                     categoryId);
             #endregion
 
             #region ItemQuery
-            ViewBag.searchText = searchText;
+            itemSearch.SearchText = searchText;
 
             var amazonOrdersContext = _context.Items
                 .Include(i => i.Category)
@@ -57,14 +61,10 @@ namespace AOWebApp.Controllers
                 amazonOrdersContext = amazonOrdersContext.Where(i => i.Category.ParentCategoryId == categoryId.Value);
             }
 
-            var items = await amazonOrdersContext.ToListAsync();
+            itemSearch.Items = await amazonOrdersContext.ToListAsync();
             #endregion
 
-            #region itemsCount
-            ViewBag.itemsCount = (!string.IsNullOrEmpty(searchText) || categoryId.HasValue) ? items.Count : 0;
-            #endregion
-
-            return View(items);
+            return View(itemSearch);
         }
 
         // GET: Items/Details/5
