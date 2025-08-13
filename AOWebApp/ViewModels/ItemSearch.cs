@@ -8,6 +8,7 @@ namespace AOWebApp.ViewModels
         public int? CategoryId { get; set; }
         public SelectList? CategoryList { get; set; }
         public List<ViewModels.ItemDetail>? Items { get; set; }
+        public string SortOrder { get; set; } = "";
 
     }
 }

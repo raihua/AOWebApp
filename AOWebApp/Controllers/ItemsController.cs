@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using AOWebApp.Data;
 using AOWebApp.Models;
 using AOWebApp.ViewModels;
+using Microsoft.Data.SqlClient;
 
 namespace AOWebApp.Controllers
 {
@@ -21,7 +22,7 @@ namespace AOWebApp.Controllers
         }
 
         // GET: Items
-        public async Task<IActionResult> Index(string searchText, int? categoryId)
+        public async Task<IActionResult> Index(string searchText, int? categoryId, string SortOrder)
         {
             ItemSearch itemSearch = new ItemSearch();
 
@@ -48,8 +49,24 @@ namespace AOWebApp.Controllers
 
             var amazonOrdersContext = _context.Items
                 .Include(i => i.Category)
-                .OrderBy(i => i.ItemName)
                 .AsQueryable();
+
+            itemSearch.SortOrder = SortOrder;
+            switch(SortOrder)
+            {
+                case "nameDesc":
+                    amazonOrdersContext = amazonOrdersContext.OrderByDescending(i => i.ItemName);
+                    break;
+                case "nameAsc":
+                    amazonOrdersContext = amazonOrdersContext.OrderBy(i => i.ItemName);
+                    break;
+                case "costDesc":
+                    amazonOrdersContext = amazonOrdersContext.OrderByDescending(i => i.ItemCost);
+                    break;
+                default:
+                    amazonOrdersContext = amazonOrdersContext.OrderBy(i => i.ItemCost);
+                    break;
+            }
 
             if (!string.IsNullOrEmpty(searchText))
             {

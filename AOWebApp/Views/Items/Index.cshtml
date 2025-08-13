@@ -1,5 +1,12 @@
 ﻿@model AOWebApp.ViewModels.ItemSearch;
 
+@functions {
+    public string isSelected(string value, string currentValue)
+    {
+        return value == currentValue ? "selected" : "";
+    }
+}
+
 @{
     ViewData["Title"] = "Index";
 }
@@ -20,6 +27,14 @@
         <select asp-for="CategoryId" title="View items for a specific category" class="form-control" asp-items="@Model.CategoryList">
             <option value="">All Categories</option>
         </select>
+
+        <select name="SortOrder" class="form-control">
+            <!option value="" @isSelected("", @Model.SortOrder)>Item Name [asc]</!option>
+            <!option value="nameDesc" @isSelected("nameDesc", @Model.SortOrder)>Item Name [desc]</!option>
+            <!option value="priceAsc" @isSelected("priceAsc", @Model.SortOrder)>Item Price [asc]</!option>
+            <!option value="priceDesc" @isSelected("priceDesc", @Model.SortOrder)>Item Price [desc]</!option>
+        </select>
+
 
     </div>
     <div class="mt-4 mb-4">
