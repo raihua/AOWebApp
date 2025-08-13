@@ -34,17 +34,17 @@
     
     <h3 class="text-success">Results: @ItemsCountMessage</h3>
     <div class="row gy-3 gx-3">
-        @foreach (var item in Model.Items)
+        @foreach (var itemDetail in Model.Items)
         {
             <div class="col-4">
                 <div class="card">
                     <div class="card-body d-flex flex-column">
-                        <h5 class="card-title">@Html.DisplayFor(modelItem => item.ItemName)</h5>
-                        <p class="card-text mb-0">Category: @Html.DisplayFor(modelItem => item.Category.CategoryName)</p>
-                        <p class="card-text mb-0">Description: @Html.DisplayFor(modelItem => item.ItemDescription)</p>
-                        <p class="card-text mb-0">Cost: @Html.DisplayFor(modelItem => item.ItemCost)</p>
-                        <img src="@item.ItemImage" class="card-img-top w-50 mt-2" alt="@item.ItemName">
-                        <a asp-action="Details" asp-route-id="@item.ItemId" class="btn btn-outline-primary w-50 mt-2">View Item Detail</a>
+                        <h5 class="card-title">@Html.DisplayFor(modelItem => itemDetail.TheItem.ItemName)</h5>
+                        <p class="card-text mb-0">Category: @Html.DisplayFor(modelItem => itemDetail.TheItem.Category.CategoryName)</p>
+                        <p class="card-text mb-0">Description: @Html.DisplayFor(modelItem => itemDetail.TheItem.ItemDescription)</p>
+                        <p class="card-text mb-0">Cost: @Html.DisplayFor(modelItem => itemDetail.TheItem.ItemCost)</p>
+                        <img src="@itemDetail.TheItem.ItemImage" class="card-img-top w-50 mt-2" alt="@itemDetail.TheItem.ItemName">
+                        <a asp-action="Details" asp-route-id="@itemDetail.TheItem.ItemId" class="btn btn-outline-primary w-50 mt-2">View Item Detail</a>
                     </div>
                 </div>
             </div>

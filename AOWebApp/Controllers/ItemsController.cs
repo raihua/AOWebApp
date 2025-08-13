@@ -61,7 +61,13 @@ namespace AOWebApp.Controllers
                 amazonOrdersContext = amazonOrdersContext.Where(i => i.Category.ParentCategoryId == categoryId.Value);
             }
 
-            itemSearch.Items = await amazonOrdersContext.ToListAsync();
+            itemSearch.Items = await amazonOrdersContext
+                .Select(i => new ItemDetail
+                {
+                    AverageRating = (i.Reviews != null && i.Reviews.Count > 0) ? i.Reviews.Average(r => r.Rating) : 0,
+                    NumberOfReviews = i.Reviews != null ? i.Reviews.Count : 0,
+                    TheItem = i
+                }).ToListAsync();
             #endregion
 
             return View(itemSearch);
