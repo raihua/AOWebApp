@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using AOWebApp.Data;
 using AOWebApp.Models;
+using AOWebApp.ViewModels;
 
 namespace AOWebApp.Controllers
 {
@@ -23,13 +24,14 @@ namespace AOWebApp.Controllers
         public async Task<IActionResult> Index(string SearchText, string Suburb)
         {
             var SuburbListQuery = _context.Addresses
-    .Where(a => a.Suburb.StartsWith(Suburb))
-    .Select(a => a.Suburb)
-    .Distinct()
-    .OrderBy(s => s)
-    .ToList();
+                .Select(a => a.Suburb)
+                .Distinct()
+                .OrderBy(s => s)
+                .ToList();
 
-            var SuburbList = new SelectList(SuburbListQuery, Suburb);
+            CustomerSearch customerSearch = new CustomerSearch();
+
+            customerSearch.SuburbList = new SelectList(SuburbListQuery, Suburb);
             List<Customer> customers = new List<Customer>();
 
 
@@ -46,10 +48,10 @@ namespace AOWebApp.Controllers
 
                 customersQuery = customersQuery.OrderBy(c => !c.FirstName.StartsWith(SearchText))
                     .ThenBy(c => c.LastName.StartsWith(SearchText));
-                customers = await customersQuery.ToListAsync();
+                customerSearch.Customers = await customersQuery.ToListAsync();
             }
 
-            return View(customers);
+            return View(customerSearch);
         }
 
         // GET: Customers/Details/5

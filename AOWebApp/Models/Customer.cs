@@ -29,6 +29,11 @@ public partial class Customer
 
     public int AddressId { get; set; }
 
+    [NotMapped]
+    [DisplayName("Address")]
+    public string FullAddress => $"{Address.AddressLine} {Address.Suburb} {Address.Postcode} [{Address.Region}]";
+
+
     public virtual Address Address { get; set; } = null!;
 
     public virtual ICollection<CustomerOrder> CustomerOrders { get; set; } = new List<CustomerOrder>();

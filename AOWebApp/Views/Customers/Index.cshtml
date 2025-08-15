@@ -1,4 +1,4 @@
-﻿@model IEnumerable<AOWebApp.Models.Customer>
+﻿@model AOWebApp.ViewModels.CustomerSearch;
 
 @{
     ViewData["Title"] = "Index";
@@ -6,74 +6,66 @@
 
 <h1>Index</h1>
 
-<div>
-    <input asp-for="SearchText" class="form-control" type="text" />
-    <select asp- for="Suburb">
-        <option value="">All suburbs</option>
-    </select>
-    <button type="submit">Submit</button>
-    <a asp-action="Create">Create New</a>
-</div>
+<form method="post" asp-controller="Customers" asp-action="Index">
+    <div class="d-flex">
+        <input asp-for="SearchText" class="form-control" type="text" title="Customer name search box" />
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.FirstName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.LastName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FullName)
+        <select class="form-control" asp-for="Suburb" asp-items="@Model.SuburbList">
+            <option value="">All suburbs</option>
+        </select>
+         
+        <button class="btn btn-outline-primary" type="submit">Search</button>
+        <a class="btn btn-outline-success" asp-action="Create">Create New</a>
+    </div>
+</form>
 
-            </th>
+<p>Matching Records Returned: @Model.Customers.Count</p>
 
-            <th>
-                @Html.DisplayNameFor(model => model.Email)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.MainPhoneNumber)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.SecondaryPhoneNumber)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ContactNumber)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Address)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.FirstName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.LastName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Email)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MainPhoneNumber)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SecondaryPhoneNumber)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Address.AddressId)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.CustomerId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.CustomerId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.CustomerId">Delete</a>
-            </td>
-        </tr>
+@if (Model.Customers.Count > 0)
+{
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Customers[0].FullName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Customers[0].Email)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Customers[0].ContactNumber)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Customers[0].Address)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Customers)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FullName)
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Email)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ContactNumber)
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FullAddress)
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.CustomerId">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.CustomerId">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@item.CustomerId">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+} else
+{
+    <h5 class="text-danger">Please search for a customer name.</h5>
 }
-    </tbody>
-</table>
