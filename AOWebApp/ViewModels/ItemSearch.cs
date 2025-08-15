@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using AOWebApp.Helpers;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace AOWebApp.ViewModels
 {
@@ -7,8 +8,9 @@ namespace AOWebApp.ViewModels
         public string SearchText { get; set; } = string.Empty;
         public int? CategoryId { get; set; }
         public SelectList? CategoryList { get; set; }
-        public List<ViewModels.ItemDetail>? Items { get; set; }
+        public PaginatedList<ViewModels.ItemDetail>? Items { get; set; }
         public string SortOrder { get; set; } = "";
+        public int? PageNumber { get; set; } = 1;
 
     }
 }

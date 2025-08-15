@@ -48,6 +48,11 @@
     string ItemsCountMessage = Model.Items.Count == 1 ? "1 item found" : "2+ items found";
     
     <h3 class="text-success">Results: @ItemsCountMessage</h3>
+
+
+    var PrevDisabled = !Model.Items.HasNextPage ? "disabled" : "";
+    var NextDisabled = !Model.Items.HasPreviousPage ? "disabled" : "";
+
     <div class="row gy-3 gx-3">
         @foreach (var itemDetail in Model.Items)
         {
@@ -65,6 +70,24 @@
             </div>
         }
     </div>
+
+    <a asp-controller="Items" asp-action="Index" 
+        asp-route-SortOrder="@Model.SortOrder" 
+        asp-route-CategoryId="@Model.CategoryId" 
+        asp-route-SearchText="@Model.SearchText" 
+        asp-route-PageNumber ="(@Model.PageNumber - 1)"
+       class="btn btn-outline-primary" disabled="@PrevDisabled">
+        Previous
+    </a>
+
+     <a asp-controller="Items" asp-action="Index"
+        asp-route-SortOrder="@Model.SortOrder"
+        asp-route-CategoryId="@Model.CategoryId"
+        asp-route-SearchText="@Model.SearchText"
+        asp-route-PageNumber ="@(Model.PageNumber + 1)"
+       class="btn btn-outline-primary" disabled="@NextDisabled">
+        Next
+    </a>
 } else
 {
     <h5 class="text-danger">Ooops, no items matched your search</h5>

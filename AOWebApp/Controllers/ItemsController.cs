@@ -9,6 +9,7 @@ using AOWebApp.Data;
 using AOWebApp.Models;
 using AOWebApp.ViewModels;
 using Microsoft.Data.SqlClient;
+using AOWebApp.Helpers;
 
 namespace AOWebApp.Controllers
 {
@@ -22,9 +23,11 @@ namespace AOWebApp.Controllers
         }
 
         // GET: Items
-        public async Task<IActionResult> Index(string searchText, int? categoryId, string SortOrder)
+        public async Task<IActionResult> Index(string searchText, int? categoryId, string SortOrder, int? pageNumber)
         {
             ItemSearch itemSearch = new ItemSearch();
+
+            itemSearch.PageNumber = pageNumber ?? 1;
 
             #region CategoriesQuery
             var CategoriesQuery =
@@ -36,6 +39,7 @@ namespace AOWebApp.Controllers
                     c.CategoryId,
                     c.CategoryName
                 };
+
             var Categories = CategoriesQuery.ToListAsync();
 
             itemSearch.CategoryList = new SelectList(await Categories,
@@ -52,6 +56,7 @@ namespace AOWebApp.Controllers
                 .AsQueryable();
 
             itemSearch.SortOrder = SortOrder;
+
             switch(SortOrder)
             {
                 case "nameDesc":
@@ -78,13 +83,14 @@ namespace AOWebApp.Controllers
                 amazonOrdersContext = amazonOrdersContext.Where(i => i.Category.ParentCategoryId == categoryId.Value);
             }
 
-            itemSearch.Items = await amazonOrdersContext
+            int PageSize = 3;
+            itemSearch.Items = await PaginatedList<ItemDetail>.CreateAsync(amazonOrdersContext
                 .Select(i => new ItemDetail
                 {
                     AverageRating = (i.Reviews != null && i.Reviews.Count > 0) ? i.Reviews.Average(r => r.Rating) : 0,
                     NumberOfReviews = i.Reviews != null ? i.Reviews.Count : 0,
                     TheItem = i
-                }).ToListAsync();
+                }).AsNoTracking(), itemSearch.PageNumber ?? 1, PageSize);
             #endregion
 
             return View(itemSearch);
