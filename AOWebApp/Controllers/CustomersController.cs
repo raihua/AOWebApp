@@ -20,10 +20,36 @@ namespace AOWebApp.Controllers
         }
 
         // GET: Customers
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string SearchText, string Suburb)
         {
-            var amazonOrdersContext = _context.Customers.Include(c => c.Address);
-            return View(await amazonOrdersContext.ToListAsync());
+            var SuburbListQuery = _context.Addresses
+    .Where(a => a.Suburb.StartsWith(Suburb))
+    .Select(a => a.Suburb)
+    .Distinct()
+    .OrderBy(s => s)
+    .ToList();
+
+            var SuburbList = new SelectList(SuburbListQuery, Suburb);
+            List<Customer> customers = new List<Customer>();
+
+
+            if (!string.IsNullOrWhiteSpace(SearchText))
+            {
+                var customersQuery = _context.Customers
+                    .Include(c => c.Address)
+                    .Where(c => c.FirstName.StartsWith(SearchText) || c.LastName.StartsWith(SearchText));
+
+                if (!string.IsNullOrWhiteSpace(Suburb))
+                {
+                    customersQuery = customersQuery.Where(c => c.Address.Suburb == Suburb);
+                }
+
+                customersQuery = customersQuery.OrderBy(c => !c.FirstName.StartsWith(SearchText))
+                    .ThenBy(c => c.LastName.StartsWith(SearchText));
+                customers = await customersQuery.ToListAsync();
+            }
+
+            return View(customers);
         }
 
         // GET: Customers/Details/5

@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AOWebApp.Models;
 
@@ -11,11 +13,19 @@ public partial class Customer
 
     public string LastName { get; set; } = null!;
 
+    [NotMapped]
+    [DisplayName("Full Name")]
+    public string FullName => $"{FirstName} {LastName}";
+
     public string Email { get; set; } = null!;
 
     public string MainPhoneNumber { get; set; } = null!;
 
     public string? SecondaryPhoneNumber { get; set; }
+
+    [NotMapped]
+    [DisplayName("Contact Number")]
+    public string ContactNumber => (!string.IsNullOrWhiteSpace(MainPhoneNumber) ? MainPhoneNumber : (!string.IsNullOrWhiteSpace(SecondaryPhoneNumber) ? SecondaryPhoneNumber : "No contact number provided"));
 
     public int AddressId { get; set; }
 
