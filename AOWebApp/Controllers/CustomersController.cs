@@ -23,13 +23,24 @@ namespace AOWebApp.Controllers
         // GET: Customers
         public async Task<IActionResult> Index(string SearchText, string Suburb)
         {
+            CustomerSearch customerSearch = new CustomerSearch();
+
             var SuburbListQuery = _context.Addresses
                 .Select(a => a.Suburb)
                 .Distinct()
                 .OrderBy(s => s)
                 .ToList();
 
-            CustomerSearch customerSearch = new CustomerSearch();
+            var CustomerNamesQuery = _context.Customers
+                .Select(c => new { c.FirstName, c.LastName, c.FullName })
+                .ToList();
+
+            foreach (var customerName in CustomerNamesQuery)
+            {
+                customerSearch.CustomerNames.Add($"{customerName.FirstName}");
+                customerSearch.CustomerNames.Add($"{customerName.LastName}");
+                customerSearch.CustomerNames.Add($"{customerName.FullName}");
+            }
 
             customerSearch.SuburbList = new SelectList(SuburbListQuery, Suburb);
             List<Customer> customers = new List<Customer>();
@@ -37,9 +48,21 @@ namespace AOWebApp.Controllers
 
             if (!string.IsNullOrWhiteSpace(SearchText))
             {
+
                 var customersQuery = _context.Customers
-                    .Include(c => c.Address)
-                    .Where(c => c.FirstName.StartsWith(SearchText) || c.LastName.StartsWith(SearchText));
+                        .Include(c => c.Address).AsQueryable();
+
+                string[] searchTerms = SearchText.Split(' ', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+
+                if (searchTerms.Length > 1)
+                {
+                    customersQuery = customersQuery.Where(c => c.FirstName.StartsWith(searchTerms[0]) && c.LastName.StartsWith(searchTerms[1]));
+                } else
+                {
+                    customersQuery = customersQuery.Where(c => c.FirstName.StartsWith(SearchText) || c.LastName.StartsWith(SearchText));
+                }
+
+
 
                 if (!string.IsNullOrWhiteSpace(Suburb))
                 {
@@ -50,6 +73,7 @@ namespace AOWebApp.Controllers
                     .ThenBy(c => c.LastName.StartsWith(SearchText));
                 customerSearch.Customers = await customersQuery.ToListAsync();
             }
+
 
             return View(customerSearch);
         }

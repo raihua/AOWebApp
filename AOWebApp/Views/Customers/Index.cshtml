@@ -8,7 +8,14 @@
 
 <form method="post" asp-controller="Customers" asp-action="Index">
     <div class="d-flex">
-        <input asp-for="SearchText" class="form-control" type="text" title="Customer name search box" />
+        <input list="CustomerNamesList" asp-for="SearchText" class="form-control" type="text" title="Customer name search box" />
+
+        <datalist id="CustomerNamesList">
+            @foreach (var name in Model.CustomerNames)
+            {
+                <option value="@name">@name</option>
+            }
+        </datalist>
 
         <select class="form-control" asp-for="Suburb" asp-items="@Model.SuburbList">
             <option value="">All suburbs</option>

@@ -11,6 +11,5 @@ namespace AOWebApp.ViewModels
         public PaginatedList<ViewModels.ItemDetail>? Items { get; set; }
         public string SortOrder { get; set; } = "";
         public int? PageNumber { get; set; } = 1;
-
     }
 }

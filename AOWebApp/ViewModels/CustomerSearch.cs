@@ -12,5 +12,7 @@ namespace AOWebApp.ViewModels
         public SelectList SuburbList { get; set; } = new SelectList(Enumerable.Empty<string>());
 
         public List<Models.Customer> Customers { get; set; } = new List<Models.Customer>();
+
+        public HashSet<string> CustomerNames { get; set; } = new HashSet<string>();
     }
 }
