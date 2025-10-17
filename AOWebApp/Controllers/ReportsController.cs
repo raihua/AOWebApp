@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System.Text.RegularExpressions;
 
 namespace AOWebApp.Controllers
 {
@@ -44,7 +45,7 @@ namespace AOWebApp.Controllers
                     {
                         year = orderGroup.Key,
                         monthNo = orderGroup.Key.month,
-                        monthName = "",
+                        monthName = System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(orderGroup.Key.month),
                         totalItems = orderGroup.Sum(orderGroup => orderGroup.ItemsInOrder.NumberOf),
                         totalSales = orderGroup.Sum(orderGroup => orderGroup.ItemsInOrder.TotalItemCost)
                     })
