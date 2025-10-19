@@ -52,6 +52,12 @@
         })
 
         function buildGraph(dataSet) {
+            let maxTotalItemsRange = d3.extent(dataSet, (d, i) => d.totalItems);
+            let maxTotalItems = maxTotalItemsRange[1];
+
+            let barMargin = 10;
+            let barWidth = width / dataSet.length;
+            console.log(barWidth);
             console.log(dataSet);
         }
 
