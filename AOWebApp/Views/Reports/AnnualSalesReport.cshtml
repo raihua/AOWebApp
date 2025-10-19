@@ -61,8 +61,8 @@
             }
 
             // adjust the graph size base on chart margins
-            height = height - (chartMargins.left + chartMargins.right);
-            width = width - (chartMargins.top + chartMargins.bottom);
+            width = width - (chartMargins.left + chartMargins.right);
+            height = height - (chartMargins.top + chartMargins.bottom);
 
             let maxTotalItemsRange = d3.extent(dataSet, (d, i) => d.totalItems);
             let maxTotalItems = maxTotalItemsRange[1];
@@ -73,7 +73,7 @@
 
             // 8 create a y scale
             let yScale = d3.scaleLinear()
-            .domain([0, maxTotalItems])
+            .domain([0, maxTotalItems])  
             .range([height, 0]);
 
             let monthArray = Array.from(dataSet, (d, i) => d.monthName);
@@ -115,6 +115,24 @@
             chartGroup.append('g')
             .classed('axis y', true)
             .call(yAxis)
+
+            // 13 add the x axis to the chartGroup
+            let xAxis = d3.axisBottom(xScale);
+            chartGroup.append('g')
+            .classed('axis x', true)
+            .attr('transform', (d, i) => {
+                return `translate(0, ${height})`;
+            })
+            .call(xAxis)
+
+            svg
+            .selectAll('.axis.x')
+            .selectAll('text')
+            .attr('transform', 'rotate(-90)')
+            .attr('dx', '-0.8em')
+            .attr('dy', '0.25em')
+            .style('text-anchor', 'end')
+            .style('font-size', '1em')
 
             console.log(barWidth);
             console.log(dataSet);
