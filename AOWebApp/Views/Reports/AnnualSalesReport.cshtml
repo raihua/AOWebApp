@@ -52,6 +52,18 @@
             let height = svg.node().getBoundingClientRect().height;
             let width = svg.node().getBoundingClientRect().width;
 
+            //12 chart margins
+            const chartMargins = {
+                left: 40,
+                right: 25,
+                top: 25,
+                bottom: 80
+            }
+
+            // adjust the graph size base on chart margins
+            height = height - (chartMargins.left + chartMargins.right);
+            width = width - (chartMargins.top + chartMargins.bottom);
+
             let maxTotalItemsRange = d3.extent(dataSet, (d, i) => d.totalItems);
             let maxTotalItems = maxTotalItemsRange[1];
 
@@ -64,25 +76,45 @@
             .domain([0, maxTotalItems])
             .range([height, 0]);
 
+            let monthArray = Array.from(dataSet, (d, i) => d.monthName);
+
+            // 10 create xscale
+            let xScale = d3.scaleBand()
+            .domain(monthArray)
+            .range([0, width])
+            .paddingInner(0.1)
+
+            svg.selectAll('g').remove() // clear old bars
+
+            // create chartGroup element
+            const chartGroup = svg.append('g')
+            .classed('chartGroup', true)
+            .attr('transform', `translate(${chartMargins.left}, ${chartMargins.top})`);
 
             // 5 select all 'g' elements and bind to the dataset
-            svg.selectAll('g').remove(); // clear old bars
-            let barGroups = svg.selectAll('g').data(dataSet);
+            chartGroup.selectAll('g').remove(); // clear old bars
+            let barGroups = chartGroup.selectAll('g').data(dataSet); //12.4 append the barGroups to the chartGroup
 
             // 6 add new bar groups
             let newBarGroups = barGroups
             .enter()
             .append("g")
             .attr('transform', (d,i) => {
-                return `translate(${i*barWidth}, ${yScale(d.totalItems)})`;
+                return `translate(${xScale(d.monthName)}, ${yScale(d.totalItems)})`;
                 // returns transform = "translate(x, y)"
             });
 
             newBarGroups.append('rect')
             .attr('x', 0)
             .attr('height', (d, i) => {return height - yScale(d.totalItems);})
-            .attr('width', barWidth - barMargin)
+            .attr('width', xScale.bandwidth())
             .attr('fill', 'black')
+
+            // 11 create the axis and add to the svg
+            let yAxis = d3.axisLeft(yScale);
+            chartGroup.append('g')
+            .classed('axis y', true)
+            .call(yAxis)
 
             console.log(barWidth);
             console.log(dataSet);
