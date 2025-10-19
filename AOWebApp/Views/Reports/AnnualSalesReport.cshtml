@@ -55,8 +55,21 @@
             let maxTotalItemsRange = d3.extent(dataSet, (d, i) => d.totalItems);
             let maxTotalItems = maxTotalItemsRange[1];
 
+            // 4 calculating the bar dimensions
             let barMargin = 10;
             let barWidth = width / dataSet.length;
+
+            // 5 select all 'g' elements and bind to the dataset
+            let barGroups = svg.selectAll('g').data(dataSet);
+
+            // 6 add new bar groups
+            let newBarGroups = barGroups.enter()
+            .append("g")
+            .attr('transform', (d,i) => {
+                return `translate(${i*barWidth}, ${(d.totalItems/maxTotalItems) * height})`;
+                // returns transform = "translate(x, y)"
+            });
+
             console.log(barWidth);
             console.log(dataSet);
         }
