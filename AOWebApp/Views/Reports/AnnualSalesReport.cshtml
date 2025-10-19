@@ -110,6 +110,15 @@
             .attr('width', xScale.bandwidth())
             .attr('fill', 'black')
 
+            newBarGroups.append('text')
+            .style('text-anchor', 'middle')
+            .attr('x', (d, i) => {return xScale.bandwidth() / 2;})
+            .attr('y', 20)
+            .style('fill', 'white')
+            .style('font-size', '1em')            
+            .text((d, i) => d.totalItems.toLocaleString());
+
+
             // 11 create the axis and add to the svg
             let yAxis = d3.axisLeft(yScale);
             chartGroup.append('g')
