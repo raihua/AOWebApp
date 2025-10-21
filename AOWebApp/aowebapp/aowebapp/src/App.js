@@ -5,6 +5,7 @@ import CardV2 from './components/CardV2';
 import CardV3 from './components/CardV3';
 import CardList from './components/CardList';
 import CardListNew from "./components/CardListNew";
+import CardListSearch from "./components/CardListSearch";
 
 function App() {
     return (
@@ -31,7 +32,8 @@ function App() {
         {/*        />*/}
         {/*        <CardList/>*/}
             {/*</div>*/}
-        <CardListNew/>
+            {/*<CardListNew/>*/}
+            <CardListSearch/>
         </div>
     )
 
